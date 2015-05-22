@@ -10,7 +10,4 @@ upload_google_ss <- function(df_name) {
     my_ss
     file.remove(df_name_quote_csv) # local copy
   }
-  else {
-    message("Needs the name of a data frame.")
-  }
 }
