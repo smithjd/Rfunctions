@@ -1,2 +1,2 @@
 # functions
-R function library
+My R function library collected in one place
