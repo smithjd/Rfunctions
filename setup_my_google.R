@@ -1,5 +1,7 @@
 # setup_my_google.R
 #
+# source("~/Rfunctions/setup_my_google.R") 
+#
 # Call this once to set up methods to easily upload data frames to a Google Spreadsheet.
 #
 # may need:  devtools::install_github("jennybc/googlesheets")
@@ -15,16 +17,16 @@ library(httr)
 #
 upload_google_ss <- function(df_name, title = "NONE") {
   if (is.data.frame(df_name)) {
-    df_name_quote_csv <- paste(deparse(substitute(df_name)),".csv", sep = "")
+    df_name_up <- deparse(substitute(df_name))
+    df_name_quote_csv <- paste0(df_name_up,".csv")
     names(df_name) <-  gsub("[_.]"," ", names(df_name))
     write.csv(df_name, file = df_name_quote_csv, row.names = F) # create local copy
-    sheet_title <- ifelse(title == "NONE", df_name, title)
+    sheet_title <- ifelse(title == "NONE", df_name_up, title)
     my_ss <- gs_upload(df_name_quote_csv, sheet_title = sheet_title) # local copy
-    file.remove(df_name_quote_csv) # local copy
+    #  file.remove(df_name_quote_csv) # local copy
     my_ss
   }
 }
-
 # # NAME the SPREADSHEET
 # my_ss  <- gs_new(title = "Vancouver - new 1")
 # # NAME the 1st WORKSHEET
