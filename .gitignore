@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .httr-oauth
-Rfuncctions.Rproj
+Rfunctions.Rproj
 mypackages.R
 misc-tables.R
+df_dictionary.R
