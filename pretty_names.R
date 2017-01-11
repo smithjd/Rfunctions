@@ -1,7 +1,7 @@
 pretty_names <- function(df_name) {
   # saves data frame names and pretties them up
   # usage:
-  #   iris <- good_names(iris)
+  #   iris <- pretty_names(iris)
   ##   upload or whatever... then restore the old names with:
   #   names(iris) <- old_name_list
   #
