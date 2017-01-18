@@ -17,8 +17,9 @@ parse_str_out <- function(str_output) {
 
 str_to_df <- function(df) {
   str_out <- capture.output(str(df))
+  str(str_out)
   str_as_df <- map_df(str_out, parse_str_out)
-  str_as_df[2:length(df),]
+  str_as_df[2:length(str_out),]
 }
 
 fivenumsum <- function(x){
@@ -54,18 +55,21 @@ fivenumsum <- function(x){
              q_50 = as.character(q_50),
              q_75 = as.character(q_75),
              max = as.character(max))
-
-    # names(summary) <- c("n_rows","num_blank", "num_unique","min", "q_25", "q_50", "q_75", "max")
     return(summary)
   }
 }
 
 make_dd <- function(df){
   require(tidyverse)
+  df_name <- substitute(df)
+  df_var_nums <- dim(df)[2]
   fivesum <- map_df(df,fivenumsum)
   snames <- as.character(names(df))
   fivesum <- bind_cols(tibble(var_name = snames), fivesum)
   str_out <- str_to_df(df)
+  label_df <- as_tibble(rep(as.character(df_name),df_var_nums))
+  names(label_df) <- "table_name"
   dd_out <- left_join(str_out, fivesum, by = "var_name")
+  dd_out <- bind_cols(label_df,dd_out)
   dd_out
 }
