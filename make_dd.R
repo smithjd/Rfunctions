@@ -17,7 +17,7 @@ parse_str_out <- function(str_output) {
 
 str_to_df <- function(df) {
   str_out <- capture.output(str(df))
-  str(str_out)
+  # str(str_out)
   str_as_df <- map_df(str_out, parse_str_out)
   str_as_df[2:length(str_out),]
 }
@@ -41,7 +41,7 @@ fivenumsum <- function(x){
                         sum(x == ""))
     num_unique <- length(unique(non_blanks))
     med_pos <- round((max(1,non_missing_n/2)),0)
-    qrt_pos <- round((min(1,non_missing_n/4)),0)
+    qrt_pos <- round((max(1,non_missing_n/4)),0)
     ordered <- non_blanks[order(non_blanks)]
     min <- ordered[1]
     q_25 <- ordered[(med_pos - qrt_pos)]
