@@ -10,12 +10,12 @@ fivenumsum <- function(x){
   # emulate fivenum function for characters, numerics and POSIXct
   # if the values of a variable are all missing, this function crashes
 
-  require(tidyverse)
-  require(lubridate)
+  suppressPackageStartupMessages(require(tidyverse))
+  suppressPackageStartupMessages(require(lubridate))
   num_rows <- length(x)
   # handle SQL "missing value" for dates...
-  x <- ifelse(is.character(x) &
-                (x == "0000-00-00 00:00:00" | x == "0000-00-00"), "", x)
+  # x <- ifelse(is.character(x) &
+  #               (x == "0000-00-00 00:00:00" | x == "0000-00-00"), "", x)
   x <- parse_guess(x)
   non_blanks <- x[complete.cases(x)]
   non_missing_n <- length(non_blanks)
