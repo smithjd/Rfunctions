@@ -10,13 +10,13 @@ fivenumsum <- function(x){
   # emulate fivenum function for characters, numerics and POSIXct
   # if the values of a variable are all missing, this function crashes
 
-  suppressPackageStartupMessages(require(tidyverse))
-  suppressPackageStartupMessages(require(lubridate))
+  suppressPackageStartupMessages(library(tidyverse))
+  suppressPackageStartupMessages(library(lubridate))
   num_rows <- length(x)
   # handle SQL "missing value" for dates...
   # x <- ifelse(is.character(x) &
   #               (x == "0000-00-00 00:00:00" | x == "0000-00-00"), "", x)
-  x <- parse_guess(x)
+  # x <- parse_guess(x)
   non_blanks <- x[complete.cases(x)]
   non_missing_n <- length(non_blanks)
   if (non_missing_n == 0) {
@@ -55,17 +55,17 @@ fivenumsum <- function(x){
 }
 
 make_dd <- function(df, df_alias = NULL){
-  suppressPackageStartupMessages(require(tidyverse))
+  suppressPackageStartupMessages(library(tidyverse))
   df_name <- substitute(df)
-  # if(!is.na(df_alias)){df_name <- df_alias}
-  df_var_nums <- dim(df)[2]
-  fivesum <- map_df(df,fivenumsum)
-  snames <- as.character(names(df))
-  fivesum <- bind_cols(tibble(var_name = snames), fivesum)
-  var_id <- tibble(var_name = names(df), var_type = map_chr(df, typeof))
-  label_df <- as_tibble(rep(as.character(df_name),df_var_nums))
-  names(label_df) <- "table_name"
-  dd_out <- left_join(var_id, fivesum, by = "var_name")
-  dd_out <- bind_cols(label_df,dd_out)
+  if (!is.null(df_alias)) {df_name <- df_alias}
+  n_of_vars_in_df <- dim(df)[2]
+  data_frame_info <- as_tibble(rep(as.character(df_name),n_of_vars_in_df))
+  var_name_list <- as.character(names(df))
+  fivesum <- map(df,fivenumsum) %>% bind_rows()
+  fivesum <- bind_cols(tibble(var_name = var_name_list), fivesum)
+  var_type_info <- tibble(var_name = names(df), var_type = map_chr(df, typeof))
+  names(data_frame_info) <- "table_name"
+  dd_out <- left_join(var_type_info, fivesum, by = "var_name")
+  dd_out <- bind_cols(data_frame_info,dd_out)
   dd_out
 }
