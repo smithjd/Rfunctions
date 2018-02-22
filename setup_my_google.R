@@ -1,6 +1,6 @@
 # setup_my_google.R
 #
-# source("~/Rfunctions/setup_my_google.R") 
+# source("~/Rfunctions/setup_my_google.R")
 #
 # Call this once to set up methods to easily upload data frames to a Google Spreadsheet.
 #
@@ -15,7 +15,9 @@ library(httr)
 # function upload_google_ss
 # assumes that you've set up the environment by calling setup_my_google.R
 #
-upload_google_ss <- function(df_name, title = "NONE") {
+upload_google_ss <- function(df_name, title = "NONE", check = FALSE) {
+  # title: label the data frame on Google Drive
+  # check: launch a browser to look at the data frame when it's been uploaded
   if (is.data.frame(df_name)) {
     df_name_up <- deparse(substitute(df_name))
     df_name_quote_csv <- paste0(df_name_up,".csv")
@@ -23,7 +25,8 @@ upload_google_ss <- function(df_name, title = "NONE") {
     write.csv(df_name, file = df_name_quote_csv, row.names = F) # create local copy
     sheet_title <- ifelse(title == "NONE", df_name_up, title)
     my_ss <- gs_upload(df_name_quote_csv, sheet_title = sheet_title) # local copy
-    #  file.remove(df_name_quote_csv) # local copy
+    file.remove(df_name_quote_csv) # local copy
+    if (check) browseURL(my_ss$browser_url)
     my_ss
   }
 }
