@@ -24,9 +24,29 @@ fivenumsum <- function(x){
                       min = "", q_25 = "", q_50 = "", q_75 = "", max = "")
     return(summary)
   } else if (non_missing_n == 1) {
-    summary <- tibble(num_rows = num_rows, num_blank = num_rows, num_unique = 0,
-                      min = "", q_25 = "", q_50 = "", q_75 = "", max = "")
-    summary$q_50 = as.character(non_blanks[1])
+    summary <- tibble(num_rows = num_rows, num_blank = num_rows, num_unique = 1,
+                      min = "", q_25 = "", q_50 = as.character(non_blanks[1]),
+                      q_75 = "", max = "")
+    # summary$q_50 = as.character(non_blanks[1])
+    return(summary)
+  } else if (non_missing_n == 2) {
+    ordered <- non_blanks[order(non_blanks)]
+    summary <- tibble(num_rows = num_rows, num_blank = sum(is.na(x)),
+                      num_unique = length(unique(non_blanks)),
+                      min = as.character(ordered[1]),
+                      q_25 = as.character(ordered[1]), q_50 = "",
+                      q_75 = as.character(ordered[2]),
+                      max = as.character(ordered[2]))
+    return(summary)
+  } else if (non_missing_n == 3) {
+    ordered <- non_blanks[order(non_blanks)]
+    summary <- tibble(num_rows = num_rows, num_blank = sum(is.na(x)),
+                      num_unique = length(unique(non_blanks)),
+                      min = as.character(ordered[1]),
+                      q_25 = as.character(ordered[1]),
+                      q_50 = as.character(ordered[2]),
+                      q_75 = as.character(ordered[3]),
+                      max = as.character(ordered[3]))
     return(summary)
   }
     else {
