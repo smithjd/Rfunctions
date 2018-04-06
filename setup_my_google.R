@@ -15,7 +15,7 @@ library(httr)
 # function upload_google_ss
 # assumes that you've set up the environment by calling setup_my_google.R
 #
-upload_google_ss <- function(df_name, title = "NONE", check = FALSE) {
+upload_google_ss <- function(df_name, title = "NONE", check = TRUE) {
   # title: label the data frame on Google Drive
   # check: launch a browser to look at the data frame when it's been uploaded
   if (is.data.frame(df_name)) {
